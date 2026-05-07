@@ -51,6 +51,16 @@ def get_prayer_times():
 def prayer_api():
     return jsonify(get_prayer_times())
 
+@app.route('/debug')
+def debug():
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+    }
+    response = requests.get("https://www.urdupoint.com/islam/shia/dallas-prayer-timings.html", headers=headers)
+    return response.text
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001)
 
