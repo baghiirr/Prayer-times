@@ -6,6 +6,8 @@ from datetime import date, datetime
 from flask import Flask, jsonify
 
 app = Flask(__name__)
+day = datetime.today()
+day_str = day.strftime("%d %B %Y")
 
 def get_prayer_times():
     url = "https://www.urdupoint.com/islam/shia/dallas-prayer-timings.html"
@@ -15,8 +17,7 @@ def get_prayer_times():
     html_content = response.text
     soup = BeautifulSoup(html_content, "html.parser")
     info = soup.find("table", class_= "main_timings_table names_tbl prayer_table ltr fs15 lh30 mb20")
-    day = datetime.today()
-    day_str = day.strftime("%d %B %Y")
+
 
     prayer_times = []
 
@@ -40,6 +41,7 @@ def get_prayer_times():
     return {"date": day_str, "times": finished_prayer_times}
 
 print(get_prayer_times())
+print(day_str)
 
 
 result = get_prayer_times()
