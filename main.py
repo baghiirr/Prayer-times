@@ -2,8 +2,11 @@ from bs4 import BeautifulSoup
 import requests
 from datetime import datetime
 from flask import Flask, jsonify
+import os 
 
+os.environ.get("19d52803af2986c9e4fbdd9664d46dd6")
 app = Flask(__name__)
+
 
 def get_prayer_times():
     url = "https://www.urdupoint.com/islam/shia/dallas-prayer-timings.html"
@@ -47,6 +50,9 @@ def get_prayer_times():
 
     return {"date": day_str, "times": finished_prayer_times}
 
+
+
+print(get_prayer_times())
 @app.route('/')
 def prayer_api():
     return jsonify(get_prayer_times())
