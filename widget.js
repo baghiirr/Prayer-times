@@ -46,4 +46,55 @@ for (let i = 0; i < prayers.length; i++) {
   }
 }
 
-const widget = new Lis
+const widget = new ListWidget()
+const gradient = new LinearGradient()
+gradient.colors = [new Color("#4f6ef7"), new Color("#7b5ea7")]
+gradient.locations = [0, 1]
+widget.backgroundGradient = gradient
+widget.setPadding(12, 14, 12, 14)
+
+const topRow = widget.addStack()
+topRow.layoutHorizontally()
+const nameText = topRow.addText(currentPrayer.name)
+nameText.textColor = Color.white()
+nameText.font = Font.boldSystemFont(22)
+topRow.addSpacer()
+const timeText = topRow.addText(currentPrayer.time)
+timeText.textColor = Color.white()
+timeText.font = Font.boldSystemFont(22)
+
+widget.addSpacer(10)
+
+const bottomRow = widget.addStack()
+bottomRow.layoutHorizontally()
+
+for (const prayer of prayers) {
+  const col = bottomRow.addStack()
+  col.layoutVertically()
+  col.centerAlignContent()
+
+  const sf = SFSymbol.named(prayer.icon)
+  const img = col.addImage(sf.image)
+  img.imageSize = new Size(24, 24)
+  img.tintColor = prayer.name === currentPrayer.name ? Color.white() : new Color("#ffffff", 0.6)
+
+  col.addSpacer(4)
+
+  const t = col.addText(prayer.time)
+  t.font = Font.boldSystemFont(prayer.name === currentPrayer.name ? 14 : 12)
+  t.textColor = prayer.name === currentPrayer.name ? Color.white() : new Color("#ffffff", 0.6)
+  t.centerAlignText()
+
+  col.addSpacer(2)
+
+  const n = col.addText(prayer.name)
+  n.font = Font.systemFont(10)
+  n.textColor = prayer.name === currentPrayer.name ? Color.white() : new Color("#ffffff", 0.6)
+  n.centerAlignText()
+
+  if (prayer !== prayers[prayers.length - 1]) bottomRow.addSpacer()
+}
+
+Script.setWidget(widget)
+widget.presentMedium()
+Script.complete()
