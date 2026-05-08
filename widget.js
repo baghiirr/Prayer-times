@@ -7,7 +7,7 @@ const cities = [
   { name: "Chicago", country: "US" },
   { name: "Los Angeles", country: "US" },
   { name: "Houston", country: "US" },
-  { name: "London", country: "GB" },
+  { name: "London", country: "UK" },
   { name: "Karachi", country: "PK" },
   { name: "Lahore", country: "PK" },
   { name: "Dubai", country: "AE" },
