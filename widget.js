@@ -1,22 +1,36 @@
 const fm = FileManager.local()
 const configPath = fm.joinPath(fm.documentsDirectory(), "prayerConfig.json")
 
+const cities = [
+  { name: "Dallas", country: "US" },
+  { name: "New York", country: "US" },
+  { name: "Chicago", country: "US" },
+  { name: "Los Angeles", country: "US" },
+  { name: "Houston", country: "US" },
+  { name: "London", country: "GB" },
+  { name: "Karachi", country: "PK" },
+  { name: "Lahore", country: "PK" },
+  { name: "Dubai", country: "AE" },
+  { name: "Toronto", country: "CA" },
+]
+
 let config
 if (!fm.fileExists(configPath)) {
   const alert = new Alert()
-  alert.title = "Prayer Times Setup"
-  alert.message = "Enter your city and country code (e.g. US, GB, PK)"
-  alert.addTextField("City", "Dallas")
-  alert.addTextField("Country Code", "US")
-  alert.addAction("Save")
-  await alert.present()
-  config = { city: alert.textFieldValue(0), country: alert.textFieldValue(1) }
+  alert.title = "Select Your City"
+  for (const city of cities) {
+    alert.addAction(`${city.name}, ${city.country}`)
+  }
+  alert.addCancelAction("Cancel")
+  const index = await alert.present()
+  if (index === -1) return
+  config = cities[index]
   fm.writeString(configPath, JSON.stringify(config))
 } else {
   config = JSON.parse(fm.readString(configPath))
 }
 
-const url = `https://your-render-url.onrender.com?city=${config.city}&country=${config.country}`
+const url = `https://your-render-url.onrender.com?city=${config.name}&country=${config.country}`
 const data = await new Request(url).loadJSON()
 
 const prayers = [
@@ -41,9 +55,7 @@ let currentPrayer = prayers[prayers.length - 1]
 
 for (let i = 0; i < prayers.length; i++) {
   const t = parseTime(prayers[i].time)
-  if (now >= t) {
-    currentPrayer = prayers[i]
-  }
+  if (now >= t) currentPrayer = prayers[i]
 }
 
 const widget = new ListWidget()
@@ -63,7 +75,13 @@ const timeText = topRow.addText(currentPrayer.time)
 timeText.textColor = Color.white()
 timeText.font = Font.boldSystemFont(22)
 
-widget.addSpacer(10)
+widget.addSpacer(6)
+
+const cityLabel = widget.addText(`${config.name} • ${data.Date}`)
+cityLabel.textColor = new Color("#ffffff", 0.6)
+cityLabel.font = Font.systemFont(10)
+
+widget.addSpacer(8)
 
 const bottomRow = widget.addStack()
 bottomRow.layoutHorizontally()
