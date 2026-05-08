@@ -30,7 +30,7 @@ if (!fm.fileExists(configPath)) {
   config = JSON.parse(fm.readString(configPath))
 }
 
-const url = `https://your-render-url.onrender.com?city=${config.name}&country=${config.country}`
+const url = `https://prayer-times-2fg1.onrender.com?city=${config.name}&country=${config.country}`
 const data = await new Request(url).loadJSON()
 
 const prayers = [

@@ -1,15 +1,23 @@
 import requests
 from datetime import datetime
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
+#initialize app
 app = Flask(__name__)
 
 date = datetime.today().strftime("%d %B %Y") 
 
-def get_prayer_timings(city="Dallas", country="US"):
-    response = requests.get(f"https://api.aladhan.com/v1/timingsByCity?city={city}&country={country}&method=0")
+# get prayer times 
+
+def get_prayer_timings(): 
+    response = requests.get("https://api.aladhan.com/v1/timingsByCity?city=Dallas&country=US&method=0")
     data = response.json()
+    
+    # Timings is being initialized as a variable to reduce headache and write cleaner code
+
     timings = data["data"]["timings"]
+
+    # convering timings to am and pm while also puttinng them into a dictionary
     timings_after_convert = {
         "Fajar" : datetime.strptime(timings["Fajr"], "%H:%M").strftime("%I:%M %p").lstrip("0"),
         "Thuhr" : datetime.strptime(timings["Dhuhr"], "%H:%M").strftime("%I:%M %p").lstrip("0"),
@@ -29,9 +37,7 @@ def get_prayer_timings(city="Dallas", country="US"):
 
 @app.route("/")
 def initialize():
-    city = request.args.get("city", "Dallas")
-    country = request.args.get("country", "US")
-    return jsonify(get_prayer_timings(city, country))
+    return get_prayer_timings()
     
 
 if __name__ == "__main__":
