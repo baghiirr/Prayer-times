@@ -1,6 +1,6 @@
-# Shia Prayer Times Widget
+# Prayer Times Widget
 
-An iPhone widget that displays daily Shia Ithna-Ashari prayer times for any city, with automatic notifications at each prayer time.
+An iPhone widget that displays daily prayer times for any city, with automatic notifications at each prayer time.
 
 ## Features
 - Shows all 5 daily prayer times (Fajr, Dhuhr, Asr, Maghrib, Isha)
